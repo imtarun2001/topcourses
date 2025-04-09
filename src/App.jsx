@@ -1,8 +1,5 @@
-
-import React from 'react';
-import { useEffect, useState } from 'react';
-import './App.css';
-import { apiUrl,filterData } from './ButtonsData';
+import React, { useEffect, useState } from 'react';
+import { apiUrl, filterData } from './ButtonsData';
 import Heading from './components/Heading';
 import Filterbar from './components/Filterbar';
 import Cards from './components/Cards';
@@ -11,18 +8,17 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const [courses,setCourses] = useState(null);
-  const [loader,setLoader] = useState(true);
-  const [category,setCategory] = useState(filterData[0].title);
+  const [courses, setCourses] = useState(null);
+  const [loader, setLoader] = useState(true);
+  const [category, setCategory] = useState(filterData[0].title);
 
   async function fetchData() {
     setLoader(true);
     try {
-      let response = await fetch(apiUrl);
-      let output = await response.json();
+      const response = await fetch(apiUrl);
+      const output = await response.json();
       setCourses(output.data);
-    }
-    catch(err) {
+    } catch (err) {
       toast.error("Error aya hai");
     }
     setLoader(false);
@@ -30,24 +26,20 @@ function App() {
 
   useEffect(() => {
     fetchData();
-  },[])
-
+  }, []);
 
   return (
-    <div className='app'>
-        <div>
-          <Heading/>
-        </div>
+    <div className="bg-gray-900 flex flex-col justify-evenly items-center w-screen mx-auto">
 
-        <div>
-          <Filterbar filterData={filterData} setCategory={setCategory}/>
-        </div>
+        <Heading />
 
-        <div className='spincard'>
-          {loader ? (<Spinner/>) : (<Cards courses={courses} category={category}/>)}
+        <Filterbar filterData={filterData} setCategory={setCategory} />
+
+        <div className="min-h-screen min-w-full">
+          {loader ? <Spinner /> : <Cards courses={courses} category={category} />}
         </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
